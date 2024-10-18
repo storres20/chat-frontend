@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);
@@ -10,10 +10,11 @@ const Chat = () => {
     const [isUsernameSet, setIsUsernameSet] = useState(false);
     const [connectedUsers, setConnectedUsers] = useState([]);
     const [isWsConnected, setIsWsConnected] = useState(false); // Track WebSocket connection status
+    const messagesEndRef = useRef(null); // Ref to track the end of the messages
 
     useEffect(() => {
-        const socket = new WebSocket('ws://145.223.120.127:3001'); // Replace with your VPS IP
-        //const socket = new WebSocket('ws://192.168.1.49:3001'); // Replace with your VPS IP
+        //const socket = new WebSocket('ws://145.223.120.127:3001'); // Replace with your VPS IP
+        const socket = new WebSocket('ws://192.168.1.49:3001'); // Replace with your VPS IP
         setWs(socket);
 
         socket.onopen = () => {
@@ -42,6 +43,13 @@ const Chat = () => {
             socket.close();
         };
     }, []);
+
+    // Scroll to the bottom whenever a new message is received
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
 
     const handleSetUsername = () => {
         if (username.trim() && isWsConnected) {
@@ -131,6 +139,7 @@ const Chat = () => {
                                     </p>
                                 );
                             })}
+                            <div ref={messagesEndRef} />
                         </div>
                         <div className="flex space-x-2">
                             <input
