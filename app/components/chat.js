@@ -20,7 +20,7 @@ const Chat = () => {
             if (parsedData.type === 'message') {
                 setMessages((prevMessages) => [...prevMessages, parsedData.data]);
             } else if (parsedData.type === 'users') {
-                setConnectedUsers(parsedData.data);
+                setConnectedUsers(parsedData.data); // Receive only online users
             }
         };
 
@@ -46,63 +46,77 @@ const Chat = () => {
         }
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    };
+
     return (
-        <div className="max-w-xl mx-auto p-6">
-            {!isUsernameSet ? (
-                <div className="text-center space-y-4">
-                    <h2 className="text-2xl font-semibold">Enter your username</h2>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Username"
-                        className="px-4 py-2 border border-gray-300 rounded-lg w-full"
-                    />
-                    <button
-                        onClick={handleSetUsername}
-                        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                    >
-                        Set Username
-                    </button>
-                </div>
-            ) : (
-                <div className="space-y-4">
-                    <h1 className="text-3xl font-semibold text-center">Real-time Chat</h1>
-                    <div className="h-64 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow">
-                        {messages.map((msg, index) => {
-                            const { username, message } = msg;
-                            return (
-                                <p key={index} className="mb-2">
-                                    <strong className="text-blue-600">{username}:</strong> {message}
-                                </p>
-                            );
-                        })}
-                    </div>
-                    <div className="flex space-x-2">
+        <div className="flex max-w-4xl mx-auto p-6 space-x-4">
+            {/* Left side for displaying online users */}
+            <div className="w-1/4 bg-gray-100 p-4 rounded-lg shadow-md">
+                <h2 className="text-xl font-semibold mb-4">Connected Users</h2>
+                <ul className="space-y-2">
+                    {connectedUsers.map((user, index) => (
+                        <li key={index} className="text-lg text-green-600">
+                            {user.username} (online)
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Right side for chat messages */}
+            <div className="w-3/4">
+                {!isUsernameSet ? (
+                    <div className="text-center space-y-4">
+                        <h2 className="text-2xl font-semibold">Enter your username</h2>
                         <input
                             type="text"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Type a message"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Username"
                             className="px-4 py-2 border border-gray-300 rounded-lg w-full"
                         />
                         <button
-                            onClick={sendMessage}
-                            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                            onClick={handleSetUsername}
+                            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                         >
-                            Send
+                            Set Username
                         </button>
                     </div>
-                    <div className="mt-4">
-                        <h2 className="text-xl font-semibold">Connected Users</h2>
-                        <ul className="list-disc pl-5">
-                            {connectedUsers.map((user, index) => (
-                                <li key={index} className="text-gray-700">{user}</li>
-                            ))}
-                        </ul>
+                ) : (
+                    <div className="space-y-4">
+                        <h1 className="text-3xl font-semibold text-center">Real-time Chat</h1>
+                        <div className="h-64 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow">
+                            {messages.map((msg, index) => {
+                                const { username, message } = msg;
+                                return (
+                                    <p key={index} className="mb-2">
+                                        <strong className="text-blue-600">{username}:</strong> {message}
+                                    </p>
+                                );
+                            })}
+                        </div>
+                        <div className="flex space-x-2">
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyDown={handleKeyPress} // Send message on Enter key press
+                                placeholder="Type a message"
+                                className="px-4 py-2 border border-gray-300 rounded-lg w-full"
+                            />
+                            <button
+                                onClick={sendMessage}
+                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                            >
+                                Send
+                            </button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };
