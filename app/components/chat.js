@@ -20,7 +20,9 @@ const Chat = () => {
             if (parsedData.type === 'message') {
                 setMessages((prevMessages) => [...prevMessages, parsedData.data]);
             } else if (parsedData.type === 'users') {
-                setConnectedUsers(parsedData.data); // Receive only online users
+                setConnectedUsers(parsedData.data); // Update connected users (online)
+            } else if (parsedData.type === 'history') {
+                setMessages(parsedData.data); // Set chat history when the user connects
             }
         };
 
