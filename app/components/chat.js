@@ -20,7 +20,9 @@ const Chat = () => {
             if (parsedData.type === 'message') {
                 setMessages((prevMessages) => [...prevMessages, parsedData.data]);
             } else if (parsedData.type === 'users') {
-                setConnectedUsers(parsedData.data); // Update connected users (online)
+                if (isUsernameSet) {
+                    setConnectedUsers(parsedData.data); // Update connected users (online) only after username is set
+                }
             } else if (parsedData.type === 'history') {
                 setMessages(parsedData.data); // Set chat history when the user connects
             }
@@ -29,7 +31,7 @@ const Chat = () => {
         return () => {
             socket.close();
         };
-    }, []);
+    }, [isUsernameSet]);
 
     const handleSetUsername = () => {
         if (username.trim()) {
@@ -56,17 +58,19 @@ const Chat = () => {
 
     return (
         <div className="flex max-w-4xl mx-auto p-6 space-x-4">
-            {/* Left side for displaying online users */}
-            <div className="w-1/4 bg-gray-100 p-4 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold mb-4">Connected Users</h2>
-                <ul className="space-y-2">
-                    {connectedUsers.map((user, index) => (
-                        <li key={index} className="text-lg text-green-600">
-                            {user.username} (online)
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            {/* Only show the left side (connected users) after username is set */}
+            {isUsernameSet && (
+                <div className="w-1/4 bg-gray-100 p-4 rounded-lg shadow-md">
+                    <h2 className="text-xl font-semibold mb-4">Connected Users</h2>
+                    <ul className="space-y-2">
+                        {connectedUsers.map((user, index) => (
+                            <li key={index} className="text-lg text-green-600">
+                                {user.username} (online)
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             {/* Right side for chat messages */}
             <div className="w-3/4">
