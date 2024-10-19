@@ -124,6 +124,7 @@ const Chat = () => {
                 ) : (
                     <div className="space-y-4">
                         <h1 className="text-3xl font-semibold text-center">Real-time Chat</h1>
+                        <h3>Welcome {username}</h3>
                         <div className="h-64 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow">
                             {messages.map((msg, index) => {
                                 const { username, message, timestamp } = msg;
