@@ -13,6 +13,8 @@ const Chat = () => {
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        //const socket = new WebSocket('ws://145.223.120.127:3001'); // Replace with your VPS IP
+        //const socket = new WebSocket('ws://192.168.1.49:3001'); // Replace with your localhost IP
         const socket = new WebSocket('wss://chat.lonkansoft.pro:3001'); // Secure WebSocket connection with WSS
 
         setWs(socket);
@@ -75,6 +77,14 @@ const Chat = () => {
         }
     };
 
+    const formatDate = (isoString) => {
+        const date = new Date(isoString);
+        if (isNaN(date)) {
+            return 'Invalid Date';
+        }
+        return date.toLocaleString(); // Format it as a local string
+    };
+
     return (
         <div className="flex max-w-4xl mx-auto p-6 space-x-4">
             {isUsernameSet && (
@@ -127,8 +137,8 @@ const Chat = () => {
                                     messageStyle = { color: 'red', fontWeight: 'bold' };
                                 }
 
-                                // Format the timestamp
-                                const formattedTimestamp = new Date(timestamp).toLocaleString();
+                                // Format the timestamp and handle any potential errors
+                                const formattedTimestamp = formatDate(timestamp);
 
                                 return (
                                     <p key={index} className="mb-2">
