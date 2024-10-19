@@ -78,9 +78,11 @@ const Chat = () => {
     };
 
     const formatDate = (isoString) => {
+        console.log("Timestamp received on frontend:", isoString); // Log timestamp to troubleshoot
+
         const date = new Date(isoString);
         if (isNaN(date)) {
-            return 'Invalid Date';
+            return 'Invalid Date'; // Handle invalid timestamp
         }
         return date.toLocaleString(); // Format it as a local string
     };
