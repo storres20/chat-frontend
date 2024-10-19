@@ -78,7 +78,7 @@ const Chat = () => {
     };
 
     const formatDate = (isoString) => {
-        console.log("Timestamp received on frontend:", isoString); // Log timestamp to troubleshoot
+        //console.log("Timestamp received on frontend:", isoString); // Log timestamp to troubleshoot
 
         const date = new Date(isoString);
         if (isNaN(date)) {
