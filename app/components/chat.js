@@ -16,7 +16,7 @@ const Chat = () => {
         //const socket = new WebSocket('ws://145.223.120.127:3001'); // Replace with your VPS IP
         //const socket = new WebSocket('ws://192.168.1.49:3001'); // Replace with your localhost IP
         //const socket = new WebSocket('wss://chat.lonkansoft.pro:3001'); // Secure WebSocket connection with WSS
-        const socket = new WebSocket('wss://chat.website101.xyz:3001'); // Secure WebSocket connection with WSS
+        const socket = new WebSocket('ws://chat.website101.xyz:3001'); // Secure WebSocket connection with WSS
 
         setWs(socket);
 
