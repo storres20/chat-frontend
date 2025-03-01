@@ -17,7 +17,7 @@ const Chat = () => {
         //const socket = new WebSocket('ws://192.168.1.49:3001'); // Replace with your localhost IP
         //const socket = new WebSocket('wss://chat.lonkansoft.pro:3001'); // Secure WebSocket connection with WSS
         //const socket = new WebSocket('wss://chat.website101.xyz:3001'); // Secure WebSocket connection with WSS
-        const socket = new WebSocket('chat-backend-production-79af.up.railway.app'); // railway backend with SSL
+        const socket = new WebSocket('wss://chat-backend-production-79af.up.railway.app'); // railway backend with SSL
 
         setWs(socket);
 
