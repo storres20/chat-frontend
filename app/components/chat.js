@@ -28,13 +28,14 @@ const Chat = () => {
 
         socket.onmessage = (event) => {
             const parsedData = JSON.parse(event.data);
+            //console.log("WebSocket received:", parsedData); // Debugging log
 
-            if (parsedData.type === 'message') {
-                setMessages((prevMessages) => [...prevMessages, parsedData.data]);
+            if (parsedData.type === 'message' || parsedData.type === 'chat_message') {
+                setMessages((prevMessages) => [...prevMessages, parsedData]); // No `.data` field
             } else if (parsedData.type === 'users') {
                 setConnectedUsers(parsedData.data);
             } else if (parsedData.type === 'history') {
-                setMessages(parsedData.data); // Load chat history when the user connects
+                setMessages(parsedData.data);
             }
         };
 
